@@ -241,7 +241,7 @@ export default class TypstPlugin extends Plugin {
     }
 
     createTypstRenderElement(path: string, source: string, display: boolean, math: boolean) {
-        let renderer = new TypstRenderElement();
+        let renderer = new TypstRenderElement(this);
         renderer.format = this.settings.format
         renderer.source = source
         renderer.path = path

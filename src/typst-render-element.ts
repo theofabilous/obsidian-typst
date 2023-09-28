@@ -1,3 +1,4 @@
+import { Plugin, MarkdownView } from 'obsidian';
 //@ts-ignore
 import { optimize } from 'svgo/dist/svgo.browser.js';
 
@@ -20,7 +21,27 @@ export default class TypstRenderElement extends HTMLElement {
     size: number
     math: boolean
 
+	plugin: Plugin
     canvas: HTMLCanvasElement
+
+	constructor(plugin: Plugin) {
+		super();
+		this.plugin = plugin;
+	}
+
+	private scheduleRefresh(time?: number) {
+		let refreshView = () => {
+			let view = this.plugin.app.workspace.getLeaf(false).view;
+			if (view instanceof MarkdownView) {
+				let cursor = view.editor.getCursor();
+				view.editor.setCursor({ line: 0, ch: 0 });
+				view.editor.setCursor(cursor);
+				// view.editor.refresh();
+				// view.editor.focus();
+			}
+		}
+		setTimeout(refreshView, time ?? 10);
+	}
 
     async connectedCallback() {
         if (!this.isConnected) {
@@ -114,6 +135,7 @@ export default class TypstRenderElement extends HTMLElement {
         } catch (error) {
             return
         }
+		this.scheduleRefresh();
     }
 
     drawToCanvas(image: ImageData) {
