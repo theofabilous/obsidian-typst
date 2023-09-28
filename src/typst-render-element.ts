@@ -36,8 +36,6 @@ export default class TypstRenderElement extends HTMLElement {
 				let cursor = view.editor.getCursor();
 				view.editor.setCursor({ line: 0, ch: 0 });
 				view.editor.setCursor(cursor);
-				// view.editor.refresh();
-				// view.editor.focus();
 			}
 		}
 		setTimeout(refreshView, time ?? 10);
